@@ -1,35 +1,25 @@
 import axios from "axios";
 
-export default function VideoUploader({ onUpload }) {
-  const handleUpload = async (e) => {
+
+const API = "http://localhost:5000";
+
+export default function VideoUploader({ onUpload, onStart, onError }) {
+  const upload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const fd = new FormData();
-    fd.append("video", file);
-
     try {
-      const res = await axios.post(
-        "https://vidbackend-3.onrender.com/upload",
-        fd,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      onStart();
+      const fd = new FormData();
+      fd.append("video", file);
 
-      // ✅ backend returns { path }
-      onUpload(res.data.path);
+      const res = await axios.post(`${API}/upload`, fd);
+      onUpload(res.data.videoPath);
     } catch (err) {
-      alert("Video upload failed");
       console.error(err);
+      onError();
     }
   };
 
-  return (
-    <div>
-      <input type="file" accept="video/*" onChange={handleUpload} />
-    </div>
-  );
+  return <input type="file" accept="video/mp4" onChange={upload} />;
 }
