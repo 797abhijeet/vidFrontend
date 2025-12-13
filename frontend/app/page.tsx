@@ -93,7 +93,7 @@ export default function Home() {
               try {
                 setStatus("rendering");
 
-                const res = await fetch("http://localhost:5000/render", {
+                const res = await fetch("https://vidbackend-3.onrender.com/render", {
                   method: "POST",
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({ captions, style }),
@@ -112,7 +112,7 @@ export default function Home() {
                  * We expose it via backend static route
                  */
                 const fileName = data.output.split("outputs/")[1];
-                setOutputVideo(`http://localhost:5000/outputs/${fileName}`);
+                setOutputVideo(`https://vidbackend-3.onrender.com/${fileName}`);
                 setStatus("done");
               } catch (e: any) {
                 setStatus("error");
