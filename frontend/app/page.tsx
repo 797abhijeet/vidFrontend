@@ -7,7 +7,7 @@ import Loader from "../components/Loader";
 import { Player } from "@remotion/player";
 import { CaptionedVideo } from "../components/remotion/CaptionedVideo";
 
-const API = "http://localhost:5000";
+const API="https://vidbackend-3.onrender.com";
 
 type Status =
   | "idle"
