@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "target": "es5",
     "lib": [
       "dom",
       "dom.iterable",
@@ -7,28 +8,19 @@
     ],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": false,
-    "noEmit": true,
-    "incremental": true,
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ]
+    "noEmit": true,
+    "jsx": "react-jsx"
   },
   "include": [
-    "next-env.d.ts",
-    ".next/types/**/*.ts",
-    "**/*.ts",
-    "**/*.tsx"
-, "components/remotion/CaptionedVideo.jsx"  ],
-  "exclude": [
-    "node_modules"
+    "src"
   ]
 }
