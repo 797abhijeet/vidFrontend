@@ -191,29 +191,7 @@ export default function Home() {
               />
             </div>
 
-            <div style={{ textAlign: "center" }}>
-              <button
-                onClick={renderVideo}
-                disabled={!canRender}
-                style={{
-                  padding: "14px 32px",
-                  borderRadius: 999,
-                  border: "none",
-                  background: canRender
-                    ? "linear-gradient(135deg, #a855f7, #ec4899)"
-                    : "#334155",
-                  color: "white",
-                  fontWeight: 600,
-                  cursor: canRender ? "pointer" : "not-allowed",
-                  boxShadow: canRender
-                    ? "0 12px 35px rgba(168,85,247,0.4)"
-                    : "none",
-                  transition: "all 0.2s ease",
-                }}
-              >
-                Render Final Video
-              </button>
-            </div>
+            
           </div>
         )}
 

@@ -37,9 +37,7 @@ export default function VideoPreview({
         >
           <div>
             <h3>❌ Video playback failed</h3>
-            <p style={{ opacity: 0.8 }}>
-              Please upload a standard MP4 video (H.264 + AAC).
-            </p>
+            
             <pre style={{ fontSize: 12, opacity: 0.6 }}>
               {String(error?.message || error)}
             </pre>
