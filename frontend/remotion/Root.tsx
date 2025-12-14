@@ -1,3 +1,4 @@
+
 import { Composition } from "remotion";
 import { CaptionedVideo } from "./CaptionedVideo";
 

@@ -11,7 +11,7 @@ export default function CaptionControls({
     try {
       onStart();
       const res = await axios.post(
-        "http://localhost:5000/captions",
+        "https://vidbackend-4.onrender.com/captions",
         { videoPath }
       );
       onCaptions(res.data.captions);

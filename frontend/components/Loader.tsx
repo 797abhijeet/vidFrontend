@@ -1,3 +1,4 @@
+
 export default function Loader({ text }: { text: string }) {
     return (
     <div

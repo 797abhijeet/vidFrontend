@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -5,9 +6,10 @@ import VideoUploader from "../components/VideoUploader";
 import CaptionControls from "../components/CaptionControls";
 import Loader from "../components/Loader";
 import { Player } from "@remotion/player";
-import { CaptionedVideo } from "../components/remotion/CaptionedVideo";
+import { CaptionedVideo } from "../remotion/CaptionedVideo";
 
-const API="https://vidbackend-3.onrender.com";
+const API = process.env.REACT_APP_API_URL;
+
 
 type Status =
   | "idle"
@@ -18,7 +20,7 @@ type Status =
   | "error";
 
 export default function Home() {
-  const [videoPath, setVideoPath] = useState("");
+  const [videoPath, setVideoPath] = useState<string>("");
   const [captions, setCaptions] = useState<any[]>([]);
   const [style, setStyle] = useState<"top" | "bottom" | "karaoke">("bottom");
   const [output, setOutput] = useState("");
@@ -26,7 +28,10 @@ export default function Home() {
   const [status, setStatus] = useState<Status>("idle");
   const [statusText, setStatusText] = useState("");
 
+
+
   const canRender =
+    typeof videoPath === "string" &&
     videoPath.length > 0 &&
     captions.length > 0 &&
     status !== "rendering";
@@ -55,6 +60,7 @@ export default function Home() {
       }
 
       setOutput(`${API}${data.outputUrl}`);
+      console.log("Rendered video URL:", `${API}${data.outputUrl}`);
       setStatus("done");
       setStatusText("🎉 Video rendered successfully");
     } catch (err: any) {
@@ -71,7 +77,7 @@ export default function Home() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        background: "#0f172a",
+        background: "radial-gradient(circle at top, #1e1b4b, #020617)",
         padding: 32,
       }}
     >
@@ -80,13 +86,25 @@ export default function Home() {
           width: "100%",
           maxWidth: 900,
           padding: 32,
-          background: "#020617",
-          borderRadius: 16,
+          background: "rgba(2,6,23,0.85)",
+          borderRadius: 18,
           color: "white",
+          boxShadow: "0 20px 60px rgba(0,0,0,0.6)",
+          backdropFilter: "blur(10px)",
         }}
       >
-        <h1 style={{ textAlign: "center" }}>
-          🎬 Remotion Captioning Platform
+        <h1
+          style={{
+            textAlign: "center",
+            fontSize: 32,
+            fontWeight: 700,
+            marginBottom: 24,
+            background: "linear-gradient(135deg, #a855f7, #ec4899)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
+        >
+          Captionify — Add Captions to Your Videos
         </h1>
 
         {(status === "uploading" ||
@@ -96,13 +114,13 @@ export default function Home() {
           )}
 
         {status === "error" && (
-          <p style={{ color: "#f87171", textAlign: "center" }}>
+          <p style={{ color: "#ef4444", textAlign: "center" }}>
             {statusText}
           </p>
         )}
 
         {status === "done" && (
-          <p style={{ color: "#4ade80", textAlign: "center" }}>
+          <p style={{ color: "#22c55e", textAlign: "center" }}>
             {statusText}
           </p>
         )}
@@ -114,7 +132,7 @@ export default function Home() {
             setStatusText("Uploading video...");
           }}
           onUpload={(path) => {
-            setVideoPath(path); // full URL from backend
+            setVideoPath(path);
             setCaptions([]);
             setOutput("");
             setStatus("done");
@@ -122,7 +140,7 @@ export default function Home() {
           }}
           onError={() => {
             setStatus("error");
-            setStatusText("❌ Upload failed");
+            setStatusText("❌Upload failed");
           }}
         />
 
@@ -147,35 +165,30 @@ export default function Home() {
           />
         )}
 
-        {/* 🎬 SINGLE REMOTION PREVIEW */}
+        {/* PREVIEW */}
         {videoPath && captions.length > 0 && (
-          <div style={{ marginTop: 24 }}>
+          <div style={{ marginTop: 28 }}>
             <div
               style={{
                 width: "100%",
                 aspectRatio: "16 / 9",
                 background: "black",
-                borderRadius: 12,
+                borderRadius: 14,
                 overflow: "hidden",
-                marginBottom: 20,
+                marginBottom: 24,
+                border: "1px solid rgba(255,255,255,0.08)",
               }}
             >
-
-              <Player<typeof CaptionedVideo, { videoPath: string; captions: any[]; style: "top" | "bottom" | "karaoke" }>
-                component={CaptionedVideo}
+              <Player
+                component={CaptionedVideo as any}
                 durationInFrames={30 * 60}
                 fps={30}
                 compositionWidth={1280}
                 compositionHeight={720}
                 controls
-                inputProps={{
-                  videoPath,
-                  captions,
-                  style,
-                }}
+                inputProps={{ videoPath, captions, style }}
                 style={{ width: "100%", height: "100%" }}
               />
-
             </div>
 
             <div style={{ textAlign: "center" }}>
@@ -183,12 +196,19 @@ export default function Home() {
                 onClick={renderVideo}
                 disabled={!canRender}
                 style={{
-                  padding: "12px 28px",
+                  padding: "14px 32px",
                   borderRadius: 999,
                   border: "none",
-                  background: canRender ? "#2563eb" : "#334155",
+                  background: canRender
+                    ? "linear-gradient(135deg, #a855f7, #ec4899)"
+                    : "#334155",
                   color: "white",
+                  fontWeight: 600,
                   cursor: canRender ? "pointer" : "not-allowed",
+                  boxShadow: canRender
+                    ? "0 12px 35px rgba(168,85,247,0.4)"
+                    : "none",
+                  transition: "all 0.2s ease",
                 }}
               >
                 Render Final Video
@@ -197,20 +217,9 @@ export default function Home() {
           </div>
         )}
 
-        {/* FINAL OUTPUT */}
-        {output && (
-          <p style={{ marginTop: 20, textAlign: "center" }}>
-            <a
-              href={output}
-              target="_blank"
-              rel="noreferrer"
-              style={{ color: "#60a5fa" }}
-            >
-              ⬇️ Download rendered video
-            </a>
-          </p>
-        )}
+       
       </div>
     </main>
   );
 }
+

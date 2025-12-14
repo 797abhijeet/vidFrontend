@@ -1,7 +1,8 @@
+
 import axios from "axios";
 
 
-const API = "http://localhost:5000";
+const API = "https://vidbackend-4.onrender.com";
 
 export default function VideoUploader({ onUpload, onStart, onError }) {
   const upload = async (e) => {
