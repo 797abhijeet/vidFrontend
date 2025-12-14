@@ -1,4 +1,4 @@
-# VidFrontend
+# Captionify 
 
 Professional frontend and backend application for video-centric features — includes a React frontend, backend API services, and Remotion video rendering utilities.
 
