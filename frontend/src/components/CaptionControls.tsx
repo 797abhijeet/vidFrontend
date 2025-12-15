@@ -79,7 +79,7 @@ export default function CaptionControls({
           const value = e.target.value as CaptionStyle;
           onStyleChange?.(value);
         }}
-        className="px-4 py-3 border-2 border-gray-300 rounded-lg font-medium text-gray-700 bg-white cursor-pointer transition-all duration-200 hover:border-purple-500 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 focus:outline-none appearance-none bg-[url('data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20width=%2216%22%20height=%2216%22%20viewBox=%220%200%2024%2024%22%20fill=%22none%22%20stroke=%228b5cf6%22%20stroke-width=%222%22%20stroke-linecap=%22round%22%20stroke-linejoin=%22round%22%3E%3Cpolyline%20points=%226%209%2012%2015%2018%209%22%3E%3C/polyline%3E%3C/svg%3E')] bg-no-repeat bg-right-3 bg-origin-content pr-10 min-w-[140px] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:border-gray-300"
+        className="px-4 py-3 border-2 border-gray-300 rounded-lg font-medium text-gray-700 bg-white cursor-pointer transition-all duration-200 hover:border-purple-500 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 focus:outline-none appearance-none  bg-no-repeat bg-right-3 bg-origin-content pr-10 min-w-[140px] disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-100 disabled:border-gray-300"
         disabled={isGenerating}
         defaultValue="bottom"
       >
