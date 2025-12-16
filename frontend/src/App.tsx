@@ -11,130 +11,12 @@ function App() {
   const [videoPath, setVideoPath] = useState<string>("");
   const [captions, setCaptions] = useState<Caption[]>([]);
   const [style, setStyle] = useState<CaptionStyle>("bottom");
-  const [outputUrl, setOutputUrl] = useState<string>("");
-  const [downloadProgress, setDownloadProgress] = useState<number>(0);
+
 
   const [status, setStatus] = useState<Status>("idle");
   const [statusText, setStatusText] = useState("");
 
-  const canRender =
-    typeof videoPath === "string" &&
-    videoPath.length > 0 &&
-    captions.length > 0 &&
-    status !== "rendering";
 
-  const renderVideo = async () => {
-    if (!canRender) return;
-
-    try {
-      setStatus("rendering");
-      setStatusText("Rendering final video...");
-
-      const res = await fetch(`${API}/render`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          videoPath,
-          captions,
-          style,
-        }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data?.error || "Render failed");
-      }
-
-      setOutputUrl(data.outputUrl);
-      console.log("Download URL:", data.outputUrl);
-      setStatus("done");
-      setStatusText("🎉 Video rendered successfully - Ready to download!");
-
-    } catch (err: any) {
-      console.error("Render error:", err);
-      setStatus("error");
-      setStatusText(err?.message || "❌ Rendering failed");
-    }
-  };
-
-  const downloadVideo = async () => {
-    if (!outputUrl) return;
-
-    try {
-      setDownloadProgress(0);
-
-      const response = await fetch(outputUrl);
-      if (!response.ok) throw new Error("Failed to fetch video");
-
-      const contentLength = response.headers.get('content-length');
-      const total = contentLength ? parseInt(contentLength) : 0;
-      const reader = response.body?.getReader();
-
-      if (!reader) throw new Error("No readable stream");
-
-      let receivedLength = 0;
-      const chunks: Uint8Array[] = [];
-
-      while (true) {
-        const { done, value } = await reader.read();
-
-        if (done) break;
-
-        chunks.push(value);
-        receivedLength += value.length;
-
-        if (total) {
-          setDownloadProgress(Math.round((receivedLength / total) * 100));
-        }
-      }
-
-      const blob = new Blob(chunks as BlobPart[], { type: "video/mp4" });
-      const url = window.URL.createObjectURL(blob);
-
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `captioned-video-${Date.now()}.mp4`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-
-      window.URL.revokeObjectURL(url);
-      setDownloadProgress(0);
-
-      setStatus("done");
-      setStatusText("✅ Video downloaded successfully!");
-
-      setTimeout(() => {
-        setStatusText("🎉 Video rendered successfully");
-      }, 3000);
-
-    } catch (error) {
-      console.error("Download error:", error);
-      setStatus("error");
-      setStatusText("❌ Download failed");
-      setDownloadProgress(0);
-    }
-  };
-
-  const simpleDownload = () => {
-    if (!outputUrl) return;
-
-    const a = document.createElement('a');
-    a.href = outputUrl;
-    a.download = `captioned-video-${Date.now()}.mp4`;
-    a.target = '_blank';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-
-    setStatus("done");
-    setStatusText("✅ Download started!");
-
-    setTimeout(() => {
-      setStatusText("🎉 Video rendered successfully");
-    }, 3000);
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-indigo-950 to-purple-950">
@@ -208,7 +90,6 @@ function App() {
                         : `${API}${path}`;
                       setVideoPath(fullVideoPath);
                       setCaptions([]);
-                      setOutputUrl("");
                       setStatus("done");
                       setStatusText("✅ Video uploaded");
                     }}
