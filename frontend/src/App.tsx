@@ -33,7 +33,7 @@ function App() {
             Captionify Studio
           </h1>
           <p className="text-gray-300 text-lg md:text-xl max-w-2xl mx-auto">
-            Add professional captions to your videos with AI-powered precision
+            Add subtitle to your videos 
           </p>
         </header>
 
@@ -91,11 +91,11 @@ function App() {
                       setVideoPath(fullVideoPath);
                       setCaptions([]);
                       setStatus("done");
-                      setStatusText("✅ Video uploaded");
+                      setStatusText("Video uploaded");
                     }}
                     onError={() => {
                       setStatus("error");
-                      setStatusText("❌ Upload failed");
+                      setStatusText("Upload failed");
                     }}
                   />
                 </div>
@@ -140,7 +140,7 @@ function App() {
                         3
                       </div>
                       <div>
-                        <h2 className="text-xl font-bold text-white">Preview & Render</h2>
+                        <h2 className="text-xl font-bold text-white">Preview </h2>
                         <p className="text-gray-400">Preview your video and download the final version</p>
                       </div>
                     </div>
